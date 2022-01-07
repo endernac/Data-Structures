@@ -1,0 +1,213 @@
+Part A: Test-first development
+  MapTest:
+    I added the integers from 0 to 9999 in the form (i, i). Tis assumes nothing about the
+    underlying data structure (but we should note that this does not cause degeneracy in
+    the structures we are testing, because they are instantiated with a string comparator.
+
+    Note: I found an error in the provided BST implementation: If a node with two children
+    is removed, the remove function will return the value of the node that replaced the
+    removed value. This issue may be fixed in the starter code, since it seems unintentional
+    and I made a post on piazza about it.
+
+  OrderedMapTest:
+    The order of a map can only change after an element has been added or removed. I added
+    random letters to the map, and tested to see that it was still ordered afterwards. Then
+    I removed the letters randomly and tested to see if they were still in order after each
+    removed each one. This was the best I could do assuming nothing about the data structure
+    being tested other than the fact that it was a map.
+
+  AVLMapTest:
+    I constructed test data that tested whether the data structure could perform each of the
+    4 rotations. I did the same for remove. The ordered map test already tested some variant
+    of adding and removing the alphabet, showing that the tree is ordered. All the other methods
+    are the same from the other data structures and don't need to be tested.
+
+  TreapMapTest:
+    I generated random integers with seed 5 and tested tested rotations for insert. Removals were
+    harder to test because I had to get the right ordering for the removals. Technically the remove
+    tests tested both left and right rotate.
+
+Part B: AVL Trees
+  I chose to copy the code over. This is because I had to change the inner Node class, so that
+  it had a height field. I had to do this so I didn't have to recalculate heights each time
+  to make the insert and remove operations O(log(n)). If I had just extended the BST code, then
+  all the methods would use the inner Node Class from BST, which does not have the height field.
+
+  This was unfortunate since it created a lot of code redundancy.
+
+Part C: Treaping through the tulips
+  Same logic and justification as AVL tree for copying code instead of inheriting from BST.
+
+Part D: Benching Word Counts
+    I ran three trials for every data structure on all the recommended files. This resulted in a lot
+    of data. In all of these initial trials, Simple map performed significantly worse than the other
+    data structures, since it is list based and cannot take advantage of binary search. What was more
+    surprising was that in almost all of these initial trials, the binary search tree speed matched if
+    not exceeded the AVL tree speed. This was surprising because I expected that a balanced tree would
+    outperform the BST since they are guaranteed (or are very likely in the case of treap) to have a
+    height of log(n), whereas a BST can be degenerate. Therefore their search time should be a lot
+    faster in worse case scenarios.
+
+    However, this actually makes sense because natural language data like what I provided isn't worst case.
+    Natural language data is pretty random, or at least random enough that it can create a balanced BST
+    without any additional frills necessary. Therefore, in cases like the ones I initially tested, an AVL
+    tree or Treap only adds marginal benefit and might actually spend more time balancing the tree
+    than what is saved from having a balanced tree.
+
+    To see what happened when I took away the randomness, I sorted the Bible (I choose the bible because
+    it was was the biggest, followed closely by the Koran). After running the data structures on this new
+    data I clearly saw what I was expecting - BST ran much much slower that AVL tree and Treap because it
+    was degenerate. In fact it ran significantly slower than Simple map too. I think this is because the
+    BST operations are not optimized for linear search like Simple map's are.
+
+    What's interesting is that Treap performed noticeably faster than the other two tree in almost every
+    scenario. This was somewhat unexpected because Treaps are supposed to be probabilistic data structures.
+    However, the speed up might be because they are somewhat simpler than AVL trees (Even though they might
+    not result in perfectly balanced trees, they perform fewer operations to obtain a reasonably balanced
+    tree). However, at the same time they are more balanced than a BST and thus searching is considerably more
+    efficient. So they are at the sweet spot of having a balanced tree vs cost required to balance a tree.
+
+
+Bible:
+    Simple:
+        11063 ms 198730 kb
+        13502 ms 190096 kb
+        11476 ms 185130 kb
+    BST:
+        881 ms 195005 kb
+        876 ms 193446 kb
+        890 ms 187426 kb
+    AVL:
+        880 ms 184372 kb
+        1060 ms 193279 kb
+        904 ms 183205 kb
+    Treap:
+        877 ms 195410 kb
+        845 ms 199739 kb
+        844 ms 194445 kb
+
+Dewey:
+    Simple:
+        2893 ms 80020 kb
+        2644 ms 79541 kb
+        3141 ms 81388 kb
+    BST:
+        329 ms 22883 kb
+        424 ms 77424 kb
+        348 ms 78437 kb
+    AVL:
+        381 ms 78097 kb
+        329 ms 78028 kb
+        357 ms 21766 kb
+    Treap:
+        318 ms 24009 kb
+        339 ms 78811 kb
+        315 ms 80356 kb
+
+Dracula:
+    Simple:
+        2756 ms 107012 kb
+        3350 ms 109634 kb
+        2701 ms 109618 kb
+    BST:
+        341 ms 106794 kb
+        478 ms 106944 kb
+        382 ms 105988 kb
+    AVL:
+        475 ms 107125 kb
+        414 ms 105488 kb
+        363 ms 106053 kb
+    Treap:
+        372 ms 107787 kb
+        360 ms 106992 kb
+        366 ms 106983 kb
+
+Einstein:
+    Simple:
+        343 ms 12902 kb
+        364 ms 12902 kb
+        331 ms 12902 kb
+    BST:
+        157 ms 12902 kb
+        165 ms 12902 kb
+        133 ms 12902 kb
+    AVL:
+        161 ms 12902 kb
+        145 ms 12902 kb
+        144 ms 12902 kb
+    Treap:
+        155 ms 12902 kb
+        128 ms 12902 kb
+        126 ms 12902 kb
+
+Frankenstein:
+    Simple:
+        1797 ms 22970 kb
+        1703 ms 22912 kb
+        1949 ms 22362 kb
+    BST:
+        277 ms 19498 kb
+        244 ms 20600 kb
+        303 ms 20349 kb
+    AVL:
+        383 ms 19704 kb
+        333 ms 19551 kb
+        257 ms 20523 kb
+    Treap:
+        282 ms 19802 kb
+        228 ms 19419 kb
+        212 ms 20383 kb
+
+Goldman:
+    Simple:
+        1811 ms 15730 kb
+        1722 ms 15053 kb
+        2300 ms 14991 kb
+    BST:
+        262 ms 11318 kb
+        325 ms 12280 kb
+        301 ms 12148 kb
+    AVL:
+        268 ms 12609 kb
+        256 ms 12917 kb
+        273 ms 11524 kb
+    Treap:
+        231 ms 11662 kb
+        290 ms 12304 kb
+        278 ms 11352 kb
+
+Koran:
+    Simple:
+        8825 ms 181632 kb
+        9286 ms 181576 kb
+        9433 ms 179037 kb
+    BST:
+        731 ms 188765 kb
+        738 ms 185700 kb
+        612 ms 181459 kb
+    AVL:
+        642 ms 184467 kb
+        767 ms 185032 kb
+        697 ms 188685 kb
+    Treap:
+        684 ms 185845 kb
+        686 ms 189488 kb
+        719 ms 188691 kb
+
+SortedBible:
+    Simple:
+        80011 ms 4480 kb
+        79008 ms 15779 kb
+        79973 ms 5385 kb
+    BST:
+        122715 ms 7036 kb
+        135379 ms 4538 kb
+        127866 ms 6880 kb
+    AVL:
+        651 ms 22090 kb
+        596 ms 19595 kb
+        637 ms 17432 kb
+    Treap:
+        601 ms 24346 kb
+        547 ms 17010 kb
+        570 ms 24315 kb

@@ -1,0 +1,45 @@
+PART I
+1. My Algorithm first creates an integer array called uniq of the same size as the input array. It needs to be the same
+   size in case all the integers in the input array are unique. It also creates an index integer called count to keep
+   track of the last position that a unique integer was added to unique. The count variable serves 2 purposes: (1) it
+   shows what position in the array to place the next unique integer, and (2) it tells up how many unique integers we
+   already added (this is important later on). Then my algorithm loops through all the strings in the input array. It
+   tries to convert each to an int, and returns an exception if one of them is not an integer. Then it loops through all
+   the unique integers in uniq and compares the current integer from the input to each unique int (it is important to
+   only loop through the ones we added, or else the program will mistake a default value in uniq as an already accounted
+   for unique integer, leading it to be missed). If the current integer is found in unique, the loop is exited and the
+   code moves on to the next element in the input array. If the current integer is not in uniq, then it is added and
+   count is increased.
+
+   TL;DR
+   Algorithm keeps array of integers it encounters for the first time (uniq array), compares each subsequent element of
+   input array to uniq integer array, and adds the element to uniq array if it's not already in uniq array.
+
+   The algorithm should work because a new integer can (obviously) only be encountered for the first time once, so there
+   should be no duplicates.
+
+2. No
+3. An array list or linked list would have made the problem a bit easier because I wouldn't have to have the variable
+   count to keep track of how many unique integers I already added to the array, because the list would just grow as I
+   added new elements. It also eliminated the potential, subtle error of counting a default value in the unique array as
+   an unique integer.
+4. For some reason, there was no dependencies tab in the modules section. I also had to figure out how to add command
+   line arguments within the IDE environment.
+
+Part II
+1. ResetableCounter gets all the methods of Counter, rather than it having to define it's own identical methods. In
+   general, interfaces extend each other for the sake of code reuse.
+2. ResetableCounter is a special case of a Counter, but a general counter cannot be cast as a ResetableCounter.
+3. Polycount wanted to test that all the different implementations of ResetableCounter satisfied the general
+   requirements of ResetableCounter. Regardless of what each one does specifically, each implementation cannot violate
+   the basic rules of ResetableCounter.
+4. In our three implementations of the counter interface, we had a +1/-1 counter, a +x/-x counter, and finally a *10//10
+   counter. All of these counters are similar in the fact that they have one function that increases the current value,
+   and one function that decreases the current value. So therefore, more general axioms would be:
+   value(up(c)) > value(c)
+   value(down(c)) < value(c)
+
+   However, this may be a little too general because these axioms don't specify the increments by which up(c) & down(c)
+   increase or decrease c. This can make lead to some form of irregular/non-reversible counting, which kind of defeats
+   the purpose of counting. To prevent this, it might be worth adding the axiom that:
+   value(down(up(c))) = value(up(down(c))) = value(c)

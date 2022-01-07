@@ -1,0 +1,243 @@
+Part A
+Xtime results:
+=======================================================================================================
+100,000 unique numbers (no repeats):
+
+MoveToFrontListSet:
+159137 ms 74083 kb (run 1)
+155412 ms 76262 kb (run 2)
+160812 ms 76261 kb (run 3)
+
+ListSet:
+152597 ms 76266 kb (run 1)
+151800 ms 76575 kb (run 2)
+155541 ms 76261 kb (run 3)
+
+TransposeArraySet:
+4025 ms 22935 kb (run 1)
+4013 ms 22936 kb (run 2)
+4154 ms 22936 kb (run 3)
+
+ArraySet:
+4317 ms 22952 kb (run 1)
+4396 ms 22951 kb (run 2)
+4443 ms 22952 kb (run 3)
+=======================================================================================================
+100,000 random variables with uniform distribution between 0 and 10,000,000 (many repeats):
+
+MoveToFrontListSet:
+148682 ms 73727 kb (run 1)
+150906 ms 73729 kb (run 2)
+154022 ms 73729 kb (run 3)
+
+ListSet:
+151568 ms 73729 kb (run 1)
+148115 ms 73725 kb (run 2)
+151279 ms 73725 kb (run 3)
+
+TransposeArraySet:
+4142 ms 20910 kb (run 1)
+4041 ms 20910 kb (run 2)
+3994 ms 20909 kb (run 3)
+
+ArraySet:
+4408 ms 20910 kb (run 1)
+4557 ms 20910 kb (run 2)
+4088 ms 20910 kb (run 3)
+=======================================================================================================
+100,000 random variables with normal distribution with variance of 1,000 (many, many repeats):
+
+MoveToFrontListSet:
+1348 ms 12779 kb (run 1)
+1393 ms 12779 kb (run 2)
+1405 ms 12779 kb (run 3)
+
+ListSet:
+2433 ms 10239 kb (run 1)
+2193 ms 10239 kb (run 2)
+2157 ms 10239 kb (run 3)
+
+TransposeArraySet:
+286 ms 2539 kb (run 1)
+334 ms 2539 kb (run 2)
+413 ms 2539 kb (run 3)
+
+ArraySet:
+289 ms 2539 kb (run 1)
+272 ms 2539 kb (run 2)
+275 ms 2539 kb (run 3)
+=======================================================================================================
+The same number repeated 100,000 times (many, many, many, many, many, many, many, many repeats):
+
+MoveToFrontListSet:
+34 ms 3830 kb (run 1)
+32 ms 3830 kb (run 2)
+25 ms 3830 kb (run 3)
+
+ListSet:
+33 ms 3839 kb (run 1)
+35 ms 3830 kb (run 2)
+22 ms 3830 kb (run 3)
+
+TransposeArraySet:
+25 ms 1290 kb (run 1)
+27 ms 1290 kb (run 2)
+25 ms 1290 kb (run 3)
+
+ArraySet:
+15 ms 1290 kb (run 1)
+17 ms 1290 kb (run 2)
+25 ms 1290 kb (run 3)
+
+=======================================================================================================
+
+I tested all four implementations of set on four different types of data with varying amounts of
+repeats. I conducted each experiment three times to reduce the likelihood of making inferences based
+on an outlier. There were many observations one can make based on the data:
+
+The most obvious trends are a) that the array implementations always perform significantly faster
+than the linked list implementations and b) the more repeats that the data has, the faster the
+program runs.
+
+(This presents a challenge in getting meaningful results from measuring the speed of the programs
+while at the same time having a standard basis of comparision. There will always be some variability
+from trial to trial so it is better to make the data set so big that the variability between trials is
+minuscule compared the sheer average run time of that type of trial. However, 100,000 numbers of input
+might be enough to create a long average run time in a linked list implementation with many repeats, but
+may not be be enough to create a long average run time of an array implementation with many many repeats.)
+
+We can now do a case by case analysis of the data.
+
+In the case of the unique data:
+There were no repeats at all, so there was be no benefit to moving the a datum after checking it. In fact.
+there was only an unnecessary cost. Therefore, I would expect ListSet and ArraySet to perform a bit better
+than MoveToFrontListSet and TransposeArraySet respectively. The data confirms this for the list implementations,
+but refutes this for the array implementations. Because the arrays run faster, perhaps the data det needed to
+be bigger?
+
+In the case of the uniform data:
+There were many repeats, but knowing that the data was repeated once gave us no information that it would
+be repeated again (due to the nature of a uniform distribution). This meant that moving data would provide
+no additional benefit, but at the same time no unnecessary cost. Therefore, I expect similar performance for
+each pair. Again, the data confirms this for the list implementations, but refutes it for the array
+implementations. Again, I suspect teh size of the data set since the variability in time for the array
+implementations is still rather large compared to the difference in run times between the two types of
+implementations.
+
+In the case of the normal data:
+There are many repeats in this data, but unlike the last case, we can say that knowing that a certain datum
+was repeated once means that it will probably be repeated again (due to the nature of the normal distribution).
+Therefore I'd expect moving repeated data to the front would provide a time advantage. I'd expect that
+MoveToFrontListSet and TransposeArraySet would perform better then ListSet and ArraySet. And of course, I'm
+correct for the list implmentations and wrong for the Array implementations. Honestly, at this point I'm starting
+to doubt whether I understand arrays :'(. I don't think that the variability in the array data is big enough to
+attribute the lack of agreement to data size. Although the overall speed of the program was so fast it's hard to
+say.
+
+In the case of the repeated data:
+Knowing that a datum was repeated gives you full knowledge of the entire data set. However, since there's only one
+datum being repeated over and over, it's probably just faster to check that the data structure contains that one
+element than check that it contains that one element and try to move it as well. Therefore, I again would expect that
+ListSet and ArraySet would perform a bit better than MoveToFrontListSet and TransposeArraySet respectively. And for
+the first time, I'm right about the array implementations ᕦ(ò_óˇ)ᕤ. However, the list implementations are too close
+to tell. You can't win them all I guess...
+
+
+
+
+
+Part B:
+Let's call the set of size N 'n' and the set of size M 'm'. Assume N > M
+
+1. Union for unordered sets of size N and M:
+    We would have to create a new set and transferring all the elements of
+    n and m into the new set. Since we already know n and m are sets, we don't
+    need to bother checking whether the new set has the element already when
+    adding elements from n to the new one. Since we are simply copying over N
+    elements, the time complexity for this step is N. For the second stage, we
+    need to be more careful and only add elements of m to the new set if they
+    aren't already elements. This involves checking N + i elements m times,
+    where i is an integer between 1 and m. This works out to a complexity of
+    NM + M^2. So the overall time complexity is: N + NM + M^2 = NM + M^2.
+    Either term might dominate depending on the relative size of N and M.
+    Since a linked list implementation uses a has() method with similar time
+    complexity, there shouldn't be any difference in time complexities for
+    the array and list implementations.
+
+2. Union for ordered sets of size N and M:
+    Similar to the unordered implementation, we need to create a new set and
+    transfer elements from both n and m into it. However, if the sets are
+    ordered, we can go through both sets concurrently, compare the values and
+    add the smaller element to the new set. Since the next element in each set
+    is always greater than or equal to, all you must do to prevent repeats is to
+    keep track of the last element added. Since you are going through each set once
+    the time complexity is N + M. This analysis is valid for linked list implementations
+    too.
+
+3. Intersection for unordered sets of size N and M:
+    For each elements of set n, we need to go through all the elements of set m to
+    see if it is there too. This results in a time complexity of NM. This is true
+    for linked lists and arrays.
+
+3. Intersection for ordered sets of size N and M:
+    We can go through each set concurrently and add the an element to the new set
+    if both n and m have the element. This involves iterating through both sets,
+    so the time complexity is again M + N. This applies to both linked lists and
+    arrays.
+
+
+
+
+
+
+Part C:
+I implemented the priority queue with a max heap and tested it on PriorityQueueTest.java
+
+
+
+
+
+Part D:
+I will use the same test files that I used in part A:
+
+Xtime results:
+=======================================================================================================
+100,000 unique numbers (no repeats):
+
+BinaryHeapPriorityQueue:
+449 ms 19343 kb (run 1)
+431 ms 19069 kb (run 2)
+425 ms 19179 kb (run 3)
+=======================================================================================================
+100,000 random variables with uniform distribution between 0 and 10,000,000 (many repeats):
+
+BinaryHeapPriorityQueue:
+538 ms 19483 kb (run 1)
+631 ms 22064 kb (run 2)
+524 ms 19140 kb (run 3)
+=======================================================================================================
+100,000 random variables with normal distribution with variance of 1,000 (many, many repeats):
+
+BinaryHeapPriorityQueue:
+226 ms 6785 kb (run 1)
+208 ms 6785 kb (run 2)
+183 ms 4246 kb (run 3)
+=======================================================================================================
+The same number repeated 100,000 times (many, many, many, many, many, many, many, many repeats):
+
+BinaryHeapPriorityQueue:
+61 ms 3854 kb
+54 ms 3854 kb
+51 ms 3854 kb
+=======================================================================================================
+
+Based on the data, we can see that the BinaryHeapPriorityQueue performed much (orders of magnitude) better
+than Set implementations for data with few or no repeats and a but worse than set implementations with many
+repeats. This is due the fact that add and remove operations have O(log(N)) time complexity for the
+BinaryHeapPriorityQueue whereas add operation for the set has O(N) and remove has O(1). To add and remove N
+elements from a BinaryHeapPriorityQueue would therefore take O(N*log(N)) whereas it would be O(N^2) for a set
+implementation.
+
+For the Binary Heap Priority Queue implementation, I expected that the time would initially increase with more
+repeats and then decrease as most of the data set became a repeat of a single number. The data confirms this
+prediction.

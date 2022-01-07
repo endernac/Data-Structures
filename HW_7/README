@@ -1,0 +1,200 @@
+=======================================================================
+README TEMPLATE for Assignment 7 (JHUgle Hash Party)
+-----------------------------------------------------------------------
+Add your information below each provided prompt, between ---- and ====.
+Do not change the order or structure of this file. 
+
+=======================================================================
+Partner full names & JHED logins
+-----------------------------------------------------------------------
+Andrew Cornelio - acornel9
+Arjun Somayazulu - asomaya1
+
+=======================================================================
+APPROACH TAKEN
+Which hashmap approaches did you try, in what order, and why did you
+choose them? What specific tweaks to HashMap or JHUgle improved or
+made things worse?  Include failed or abandoned attempts if any, and
+why. Summarize all the different ways you developed, evaluated and
+improved your hashmaps and the JHUgle application.
+-----------------------------------------------------------------------
+We implemented three open addressing strategies - linear probing,
+quadratic probing, and double hashing.
+
+My first approach to linear hashing was the using two different arrays
+of keys and values. I abandoned this because I wanted to use tomb stones
+for deleting elements and it was hard to find a way to implement tomb
+stones without some sort of internal stored variable like what I used in
+the Entries class. In retrospect it didn't matter that much since for
+this application, we don't need to delete elements.
+
+The second modification I made was the way in which I resized. I initially
+had some form of hash collision resolution as I was adding hash values to
+resized array. However, I realized a better way to do it would be to just
+create an entirely new hashmap and re use the existing machinery I had for
+insertion, which greatly simplified the code.
+
+The third modification I made was to tweak the way I tested primes in my
+search for the next prime. I was able to reduce the testing time from
+O(m) to O(log(m)), which saved some time. Some other people used an array
+of pre determined primes which would have reduced the search time down to
+O(1). However, since it is amortized anyway it does not mattar as long
+as it isn't super inefficient.
+
+My code for quadratic probing is pretty much the same as for linear probing.
+However, for my double hashing I spent a lot of time trying to find a suitable
+hash second hash function. At first I tried using: P - (h (mod P)), where P is a
+prime number less then the size of teh hash table. However, this performed a bit
+slower than the quadratic probing. Then I tried bit shift approach which was a
+a little better but was still worse than quadratic probing.
+
+=======================================================================
+BENCHMARK DATA
+Include XTime results, for each hash map implementation you tried, along
+with information about the input data sets and operation sequences used.
+-----------------------------------------------------------------------
+HashMap (quadratic probing):
+
+Apache:
+789 ms 44793 kb
+760 ms 108806 kb
+771 ms 106927 kb
+
+Jhu:
+67 ms 1358 kb
+61 ms 1358 kb
+64 ms 1358 kb
+
+Joanne:
+41 ms 1358 kb
+42 ms 1358 kb
+50 ms 1358 kb
+
+Newegg:
+543 ms 26850 kb
+629 ms 27889 kb
+613 ms 26951 kb
+
+Random164:
+2160 ms 175872 kb
+2156 ms 176621 kb
+1915 ms 175381 kb
+
+
+HashMapLin (linear probing):
+
+Apache:
+654 ms 106400 kb
+679 ms 106204 kb
+714 ms 106930 kb
+
+Jhu:
+60 ms 1358 kb
+52 ms 1358 kb
+71 ms 1358 kb
+
+Joanne:
+53 ms 1358 kb
+44 ms 1358 kb
+38 ms 1358 kb
+
+Newegg:
+569 ms 26761 kb
+598 ms 27874 kb
+553 ms 27462 kb
+
+Random164:
+1666 ms 175270 kb
+1725 ms 175794 kb
+1657 ms 175711 kb
+
+HashMapDoub (double hashing):
+
+Apache:
+779 ms 44144 kb
+844 ms 45214 kb
+840 ms 43990 kb
+
+Jhu:
+60 ms 1358 kb
+58 ms 1358 kb
+57 ms 1358 kb
+
+Joanne:
+46 ms 1358 kb
+61 ms 1358 kb
+44 ms 1358 kb
+
+Newegg:
+627 ms 27868 kb
+752 ms 27888 kb
+719 ms 26794 kb
+
+Random164:
+1941 ms 175756 kb
+1938 ms 176080 kb
+1752 ms 175284 kb
+
+
+TreapMap:
+
+Apache:
+1544 ms 43934 kb
+1195 ms 43942 kb
+1233 ms 44039 kb
+
+Jhu:
+60 ms 1331 kb
+71 ms 1331 kb
+55 ms 1331 kb
+
+Joanne:
+68 ms 1331 kb
+45 ms 1331 kb
+53 ms 1331 kb
+
+Newegg:
+930 ms 27047 kb
+714 ms 26719 kb
+822 ms 28591 kb
+
+Random164:
+3738 ms 154858 kb
+3228 ms 154815 kb
+3284 ms 154936 kb
+
+
+
+=======================================================================
+DISCUSSION/ANALYSIS
+Provide an analysis of your benchmark data and conclusions. Why did
+you choose your final HashMap implementation as the best one? What 
+results were surprising and which were expected?
+-----------------------------------------------------------------------
+Overall, no significant differences were observed between the three implementations,
+except for when run on the random164 dataset. When run on that random164 dataset,
+the HashMapLin, which uses linear probing, performed markedly better (about 17% better)
+than both HashMap (which uses quadratic probing) and HashMapDoub (double hashing).
+random164 is the largest dataset, so the existence of significant differences in
+runtime in that dataset indicates that asymptotic time complexities are different
+between the the implementations, which are only visible at large dataset sizes.
+
+
+Within each HashMap implementation, we observed the expected runtime differences:
+On larger subsets (random164 and newegg), we observed larger runtimes, and on smaller
+subsets (apache, joanne, and jhu) we observed proportionally smaller runtimes.
+
+Benchmarking against the TreapMap from hw6 was also performed for comparison. We observe
+that on small datasets, the TreapMap performs similar to the HashMap implementations, but
+on larger datasets, the TreapMap performs markedly worse, indicating worse (faster growing)
+asymptotic time complexity.
+
+=======================================================================
+PARTNER CONTRIBUTIONS
+How did you work together? What were the primary contributions of each
+partner?
+-----------------------------------------------------------------------
+Andrew - Wrote Hashmaps and helped with JHUgle
+Arjun - Wrote JHUgle, benchmarked hashmaps, and wrote hashmap tests
+
+=======================================================================

@@ -1,0 +1,56 @@
+Part I
+
+Error: Bad token
+Description: User input an invalid input such as a string, float, or non recognized symbol
+Sample inputs:
+    > blah -4 /
+    > 0.23 5 +
+    > 5 4 $
+
+ERROR: Not enough arguments
+Description: User tries to do a binary operation on fewer than 2 integers
+Sample inputs:
+    > 1 +
+    > -47 /
+
+ERROR: Division by 0
+Description: User tries to divide by 0
+Sample inputs:
+    > -902 0 /
+    > 19 0 %
+
+ERROR: Nothing to show
+Description: User tries to see the result of the last calculation before entering any inputs
+Sample inputs:
+    > .
+
+Part II
+I first wrote an ADT for Deque to figure out what the axioms and preconditions were. There was a bit of redundancy in
+the ADT because I incorporated the length method as well, when I could have just used the front(), back(), and empty()
+methods on unique inputs. That beings said, having a length method makes it easier to test. However, the process of
+writing an still challenging because I wanted to get the essence of the data structure with as few tests as possible.
+
+I made several tests which I will list below:
+emptyNewTest: Test new Deque is empty
+lengthNewTest: Test new Deque has length 0
+emptyFrontTest: Test empty Deque throws EmptyException when front is called (precondition)
+emptyBackTest: Test empty Deque throws EmptyException when back is called (precondition)
+emptyRemoveFrontTest: Test empty Deque throws EmptyException when removeFront is called (precondition)
+emptyRemoveBackTest: Test empty Deque throws EmptyException when removeBack is called (precondition)
+emptyInsertFrontTest: Test insertFront makes deque non empty
+emptyInsertBackTest: Test insertBack makes deque non empty
+lengthInsertFrontTest: Test insertFront adds new string each time it is called
+backInsertFrontTest: Test insertFront adds new string to front each time it is called
+lengthInsertBackTest: Test insertBack adds new string each time it is called
+frontInsertBackTest: Test insertFront adds new string to back each time it is called
+lengthRemoveFrontTest: Test removeFront removes new string from front each time it is called
+lengthRemoveBackTest: Test removeBack removes new string from front each time it is called
+
+I found that 4 tests failed: emptyBackTest, emptyRemoveFrontTest, emptyRemoveBackTest, lengthInsertBackTest.
+
+The cause of the first three are pretty simple. They just don't throw an empty exception when they are supposed to. The
+failure of the lengthInsertBackTest shows that the insert back function does not always add elements. However, the
+emptyInsertBackTest shows that the insertBack method works at least some of the time. Therefore most rational explanation
+is that FlawedDeque226 uses a circular array, but the insertBack method does not increase the size of the array when it
+is full. this would be a much more subtle error than if a doubly linked list was used, since there is no limit to the
+amount of nodes you can add for a doubly linked list.

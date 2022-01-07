@@ -1,0 +1,18 @@
+PART I:
+  1. I kept track of the number of elements I added to the array using a variable called count
+     which I incremented every time I added a variable. When count equalled length of the array,
+     the array was full and had to be doubled before doing anything else.
+
+PART II:
+  1. SparseArray would be useful when the array doesn't hold that many unique values relative to
+     the overall size of the array. For example, a SparseArray is good for representing a standard
+     basis vector of size n, which has 1 element equal to 1 and n-1 elements equal to 0. It would
+     save a lot of memory to just store the index and value of the 1 and the default 0 value, rather
+     than storing an entire array of length n.
+  2. SparseArray implements array which implements iterable which has an iterator(), so SparseArray
+     must implement iterator() in order to compile. On a practical level, it is good design practice.
+     To a client, SparseArray should be indistinguishable from a SimpleArray or ListArray except that
+     in some situations it saves a lot of memory. Going back to the standard basis vector example, a
+     client might want to iterate over an arbitrary array in order to perform matrix multiplication.
+     Even if a SparseArray representation of a standard basis vector saves memory, it will be useless
+     unless it "plays well" with other non sparse arrays.
